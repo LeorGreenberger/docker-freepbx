@@ -1,0 +1,51 @@
+#!/usr/bin/with-contenv bash
+
+source /assets/functions/00-container
+prepare_service single
+# shellcheck disable=SC2034
+PROCESS_NAME="smtp"
+
+output_off
+### Debug mode - enable mailHog
+if var_true "$DEBUG_SMTP" ; then
+    print_notice "SMTP debugging mode activated"
+    SMTP_HOST="localhost"
+    SMTP_PORT=1025
+else
+    service_stop "$(basename "$0")"
+fi
+
+rm -f /usr/sbin/sendmail
+ln -s /usr/bin/msmtp /usr/sbin/sendmail
+
+if var_true "$ENABLE_SMTP" ; then
+  rm -f /usr/sbin/sendmail
+  ln -s /usr/bin/msmtp /usr/sbin/sendmail
+
+  echo ${SMTP_CLIENT_ID} | secret-tool store --label="msmtp-client-id" ${SMTP_FROM} client_id
+  echo ${SMTP_CLIENT_SECRET} | secret-tool store --label="msmtp-client-secret" ${SMTP_FROM} client-secret
+  echo ${SMTP_CLIENT_REFRESH} | secret-tool store --label="msmtp-refresh" ${SMTP_FROM} refresh
+
+  echo "### Automatically generated on container start. See documentation on how to set!" > /etc/msmtprc
+  {
+    echo "defaults"
+    echo "host smtp.gmail.com"
+    echo "port 587"
+    echo "protocol smtp"
+    echo "tls on"
+    echo "tls_trust_file /etc/ssl/certs/ca-certificates.crt"
+    echo  ""
+    echo "account pbx"
+    echo "auth oauthbearer"
+    echo "from ${SMTP_FROM}"
+    echo "user ${SMTP_FROM}"
+    echo "passwordeval /usr/local/share/gmail-oath2/oauth2token ${SMTP_FROM} ${SMTP_FROM}"
+  } >> /etc/msmtprc
+
+    print_notice "Sendmail replaced and enabled to route mail to: GMAIL"
+else
+    print_notice "Disabling SMTP Features"
+fi
+
+output_on
+liftoff

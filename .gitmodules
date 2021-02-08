@@ -1,0 +1,6 @@
+[submodule "gmail-oauth2-tools"]
+	path = gmail-oauth2-tools
+	url = https://github.com/google/gmail-oauth2-tools
+[submodule "dotfiles"]
+	path = dotfiles
+	url = https://github.com/tenllado/dotfiles

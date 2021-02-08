@@ -119,6 +119,7 @@ RUN echo "Package: libxml2*" > /etc/apt/preferences.d/libxml2 && \
                     libneon27 \
                     libosptk4 \
                     libresample1 \
+                    libsecret-tools \
                     libsnmp30 \
                     libspeexdsp1 \
                     libsrtp2-1 \
