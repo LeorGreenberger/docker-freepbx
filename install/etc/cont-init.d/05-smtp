@@ -22,9 +22,9 @@ if var_true "$ENABLE_SMTP" ; then
   rm -f /usr/sbin/sendmail
   ln -s /usr/bin/msmtp /usr/sbin/sendmail
 
-  echo ${SMTP_CLIENT_ID} | secret-tool store --label="msmtp-client-id" ${SMTP_FROM} client_id
-  echo ${SMTP_CLIENT_SECRET} | secret-tool store --label="msmtp-client-secret" ${SMTP_FROM} client-secret
-  echo ${SMTP_CLIENT_REFRESH} | secret-tool store --label="msmtp-refresh" ${SMTP_FROM} refresh
+  # echo ${SMTP_CLIENT_ID} | secret-tool store --label="msmtp-client-id" ${SMTP_FROM} client_id
+  # echo ${SMTP_CLIENT_SECRET} | secret-tool store --label="msmtp-client-secret" ${SMTP_FROM} client-secret
+  # echo ${SMTP_CLIENT_REFRESH} | secret-tool store --label="msmtp-refresh" ${SMTP_FROM} refresh
 
   echo "### Automatically generated on container start. See documentation on how to set!" > /etc/msmtprc
   {
