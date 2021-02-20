@@ -97,6 +97,7 @@ RUN echo "Package: libxml2*" > /etc/apt/preferences.d/libxml2 && \
                     $ASTERISK_BUILD_DEPS \
                     apache2 \
                     composer \
+                    dbus \
                     fail2ban \
                     ffmpeg \
                     flite \

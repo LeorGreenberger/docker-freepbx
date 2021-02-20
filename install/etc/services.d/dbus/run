@@ -1,0 +1,11 @@
+#!/usr/bin/with-contenv bash
+
+mkdir -p /run/dbus
+exec s6-notifyoncheck dbus-daemon --system --nofork --nopidfile
+
+{
+exec s6-svwait -U /var/run/s6/services/dbus
+echo ${SMTP_CLIENT_ID} | secret-tool store --label="msmtp-client-id" ${SMTP_FROM} client_id
+echo ${SMTP_CLIENT_SECRET} | secret-tool store --label="msmtp-client-secret" ${SMTP_FROM}client-secret
+echo ${SMTP_CLIENT_REFRESH} | secret-tool store --label="msmtp-refresh" ${SMTP_FROM} refresh
+} &
